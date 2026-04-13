@@ -26,4 +26,15 @@ public class PostController {
         postRepository.deleteById(id);
     }
 
+    @PutMapping("/{id}")
+    public Post updatePost(@PathVariable Long id, @RequestBody Post updatedPost){
+        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
+
+        post.setTitle(updatedPost.getTitle());
+        post.setContent(updatedPost.getContent());
+        return postRepository.save(post);
+    }
+
+
+
 }
