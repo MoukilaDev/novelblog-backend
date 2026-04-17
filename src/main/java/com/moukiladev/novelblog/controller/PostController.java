@@ -18,21 +18,30 @@ public class PostController {
     @GetMapping
     public List<Post> getAllPosts(){return postRepository.findAll();}
 
+    @GetMapping("/{id}")
+    public Post getPostById(@PathVariable Long id){
+        return postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+    }
+
     @PostMapping // JSON -> Java object
     public Post createPost(@RequestBody Post post){return postRepository.save(post);}
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id){
-        postRepository.deleteById(id);
+    public void deletePost(@PathVariable Long id) {
+        Post post = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+
+        postRepository.delete(post);
     }
 
     @PutMapping("/{id}")
-    public Post updatePost(@PathVariable Long id, @RequestBody Post updatedPost){
-        Post post = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
+    public Post updatePost(@PathVariable Long id, @RequestBody Post post){
+        Post updatedPost = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
 
-        post.setTitle(updatedPost.getTitle());
-        post.setContent(updatedPost.getContent());
-        return postRepository.save(post);
+        updatedPost.setTitle(post.getTitle());
+        updatedPost.setContent(post.getContent());
+        return postRepository.save(updatedPost);
     }
 
 
