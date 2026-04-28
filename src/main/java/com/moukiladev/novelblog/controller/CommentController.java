@@ -1,0 +1,39 @@
+package com.moukiladev.novelblog.controller;
+
+import com.moukiladev.novelblog.model.Comment;
+import com.moukiladev.novelblog.model.Post;
+import com.moukiladev.novelblog.repository.CommentRepository;
+import com.moukiladev.novelblog.repository.PostRepository;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/posts")
+public class CommentController {
+    private final PostRepository postRepository;
+    private final CommentRepository commentRepository;
+    public CommentController(PostRepository postRepository ,CommentRepository commentRepository){
+        this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
+    }
+
+    @GetMapping("/{postId}/comments")
+    public List<Comment> getCommentsByPostId(@PathVariable Long postId){
+        return  commentRepository.findByPostId(postId);
+    }
+
+    @PostMapping("/{postId}/comment")
+    public Comment createCommentById(@PathVariable Long postId, @RequestBody Comment newComment){
+        Post post = postRepository.findById(postId)
+                .orElseThrow(() -> new RuntimeException("Post not found"));
+        newComment.setPost(post);
+        return commentRepository.save(newComment);
+    }
+
+    @DeleteMapping("/comments/{commentId}")
+    public void deleteCommentById(@PathVariable Long commentId){
+        commentRepository.deleteById(commentId);
+    }
+}

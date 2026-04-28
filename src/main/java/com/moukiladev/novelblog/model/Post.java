@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Post {
@@ -13,11 +15,15 @@ public class Post {
     private String title;
     private String content;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Comment> comments;
+
     // Constructor
     public Post(){};
-    public Post(String title, String content){
+    public Post(String title, String content, List<Comment> comments){
         this.title = title;
         this.content = content;
+        this.comments = comments;
     }
     // Getter and Setter
     public Long getId() {
@@ -44,12 +50,11 @@ public class Post {
         this.content = content;
     }
 
-    @Override
-    public String toString() {
-        return "Post{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                '}';
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 }

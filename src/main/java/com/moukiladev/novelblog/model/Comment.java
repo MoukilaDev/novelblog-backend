@@ -1,0 +1,52 @@
+package com.moukiladev.novelblog.model;
+
+import jakarta.persistence.*;
+
+@Entity
+public class Comment {
+
+    // Attribute
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String readerName;
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post;
+
+    //Constructors
+    public Comment(){}
+    public Comment(String readerName, String content, Post post){
+        this.readerName = readerName;
+        this.content = content;
+        this.post = post;
+    }
+
+    //Getters and setters
+
+    public String getReaderName() {
+        return readerName;
+    }
+
+    public void setReaderName(String readerName) {
+        this.readerName = readerName;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
+    }
+}
