@@ -24,11 +24,13 @@ public class CommentController {
         return  commentRepository.findByPostId(postId);
     }
 
-    @PostMapping("/{postId}/comment")
+    @PostMapping("/{postId}/comments")
     public Comment createCommentById(@PathVariable Long postId, @RequestBody Comment newComment){
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new RuntimeException("Post not found"));
+        System.out.println("post reached");
         newComment.setPost(post);
+        System.out.println("comment associated with the post");
         return commentRepository.save(newComment);
     }
 
