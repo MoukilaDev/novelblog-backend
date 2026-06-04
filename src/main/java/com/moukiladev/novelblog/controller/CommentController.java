@@ -4,6 +4,7 @@ import com.moukiladev.novelblog.model.Comment;
 import com.moukiladev.novelblog.model.Post;
 import com.moukiladev.novelblog.repository.CommentRepository;
 import com.moukiladev.novelblog.repository.PostRepository;
+import org.aspectj.bridge.ICommand;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class CommentController {
 
     @DeleteMapping("/comments/{commentId}")
     public void deleteCommentById(@PathVariable Long commentId){
-        commentRepository.deleteById(commentId);
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Post not found"));
+        commentRepository.delete(comment);
     }
 }
