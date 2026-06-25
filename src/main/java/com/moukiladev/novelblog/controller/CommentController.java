@@ -35,7 +35,16 @@ public class CommentController {
         return commentRepository.save(newComment);
     }
 
-    @DeleteMapping("/comments/{commentId}")
+    @PutMapping("/comments/{commentId}")
+    public Comment updateComment(@PathVariable Long commentId, @RequestBody Comment comment){
+        Comment updatedComment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new RuntimeException("comment not found"));
+        updatedComment.setContent(comment.getContent());
+        updatedComment.setReaderName(comment.getReaderName());
+        return commentRepository.save(updatedComment);
+    }
+
+    @DeleteMapping("/{commentId}/comments")
     public void deleteCommentById(@PathVariable Long commentId){
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Post not found"));
         commentRepository.delete(comment);
