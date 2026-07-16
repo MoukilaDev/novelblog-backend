@@ -1,13 +1,11 @@
 package com.moukiladev.novelblog.controller;
 
+import com.moukiladev.novelblog.exception.ResourceNotFoundException;
 import com.moukiladev.novelblog.model.Comment;
 import com.moukiladev.novelblog.model.Post;
 import com.moukiladev.novelblog.repository.CommentRepository;
 import com.moukiladev.novelblog.repository.PostRepository;
-import org.aspectj.bridge.ICommand;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -28,7 +26,7 @@ public class CommentController {
     @PostMapping("/{postId}/comments")
     public Comment createCommentById(@PathVariable Long postId, @RequestBody Comment newComment){
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
         System.out.println("post reached");
         newComment.setPost(post);
         System.out.println("comment associated with the post");
@@ -38,7 +36,7 @@ public class CommentController {
     @PutMapping("/comments/{commentId}")
     public Comment updateComment(@PathVariable Long commentId, @RequestBody Comment comment){
         Comment updatedComment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new RuntimeException("comment not found"));
+                .orElseThrow(() -> new ResourceNotFoundException ("comment not found"));
         updatedComment.setContent(comment.getContent());
         updatedComment.setReaderName(comment.getReaderName());
         return commentRepository.save(updatedComment);
@@ -46,7 +44,7 @@ public class CommentController {
 
     @DeleteMapping("/{commentId}/comments")
     public void deleteCommentById(@PathVariable Long commentId){
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Post not found"));
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException ("Post not found"));
         commentRepository.delete(comment);
     }
 }

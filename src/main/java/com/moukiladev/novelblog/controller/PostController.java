@@ -1,5 +1,6 @@
 package com.moukiladev.novelblog.controller;
 
+import com.moukiladev.novelblog.exception.ResourceNotFoundException;
 import com.moukiladev.novelblog.model.Post;
 import com.moukiladev.novelblog.repository.PostRepository;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class PostController {
     @GetMapping("/{id}")
     public Post getPostById(@PathVariable Long id){
         return postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
     }
 
     @PostMapping // JSON -> Java object
@@ -30,14 +31,14 @@ public class PostController {
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id) {
         Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+                .orElseThrow(() -> new ResourceNotFoundException ("Post not found"));
 
         postRepository.delete(post);
     }
 
     @PutMapping("/{id}")
     public Post updatePost(@PathVariable Long id, @RequestBody Post post){
-        Post updatedPost = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found"));
+        Post updatedPost = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException ("Post not found"));
 
         updatedPost.setTitle(post.getTitle());
         updatedPost.setContent(post.getContent());
