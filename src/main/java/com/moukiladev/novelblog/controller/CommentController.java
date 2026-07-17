@@ -5,6 +5,8 @@ import com.moukiladev.novelblog.model.Comment;
 import com.moukiladev.novelblog.model.Post;
 import com.moukiladev.novelblog.repository.CommentRepository;
 import com.moukiladev.novelblog.repository.PostRepository;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -24,7 +26,7 @@ public class CommentController {
     }
 
     @PostMapping("/{postId}/comments")
-    public Comment createCommentById(@PathVariable Long postId, @RequestBody Comment newComment){
+    public Comment createCommentById(@PathVariable Long postId, @Valid @RequestBody Comment newComment){
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
         System.out.println("post reached");

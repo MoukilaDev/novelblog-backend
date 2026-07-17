@@ -2,6 +2,7 @@ package com.moukiladev.novelblog.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Comment {
@@ -10,7 +11,9 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "readerName is required")
     private String readerName;
+    @NotBlank(message = "content is required")
     private String content;
 
     @ManyToOne

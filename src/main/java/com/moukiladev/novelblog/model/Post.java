@@ -3,6 +3,8 @@ package com.moukiladev.novelblog.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.validation.constraints.NotBlank;
+
 import jakarta.persistence.Id;
 import jakarta.persistence.*;
 import java.util.List;
@@ -12,7 +14,9 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "title is required")
     private String title;
+    @NotBlank(message = "content is required")
     private String content;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)

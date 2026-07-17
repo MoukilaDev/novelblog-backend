@@ -3,6 +3,8 @@ package com.moukiladev.novelblog.controller;
 import com.moukiladev.novelblog.exception.ResourceNotFoundException;
 import com.moukiladev.novelblog.model.Post;
 import com.moukiladev.novelblog.repository.PostRepository;
+import jakarta.validation.Valid;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,7 +28,7 @@ public class PostController {
     }
 
     @PostMapping // JSON -> Java object
-    public Post createPost(@RequestBody Post post){return postRepository.save(post);}
+    public Post createPost(@Valid @RequestBody Post post){return postRepository.save(post);}
 
     @DeleteMapping("/{id}")
     public void deletePost(@PathVariable Long id) {
@@ -37,8 +39,9 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
-    public Post updatePost(@PathVariable Long id, @RequestBody Post post){
-        Post updatedPost = postRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException ("Post not found"));
+    public Post updatePost(@PathVariable Long id, @Valid @RequestBody Post post){
+        Post updatedPost = postRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException ("Post not found"));
 
         updatedPost.setTitle(post.getTitle());
         updatedPost.setContent(post.getContent());
