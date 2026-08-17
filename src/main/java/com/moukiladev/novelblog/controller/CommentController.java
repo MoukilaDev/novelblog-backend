@@ -20,6 +20,7 @@ public class CommentController {
         this.postRepository = postRepository;
     }
 
+
     @GetMapping("/{postId}/comments")
     public List<Comment> getCommentsByPostId(@PathVariable Long postId){
         return  commentRepository.findByPostId(postId);
@@ -36,7 +37,7 @@ public class CommentController {
     }
 
     @PutMapping("/comments/{commentId}")
-    public Comment updateComment(@PathVariable Long commentId, @RequestBody Comment comment){
+    public Comment updateComment(@PathVariable Long commentId, @Valid @RequestBody Comment comment){
         Comment updatedComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException ("comment not found"));
         updatedComment.setContent(comment.getContent());
