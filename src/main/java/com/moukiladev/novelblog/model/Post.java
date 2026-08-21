@@ -15,8 +15,10 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank(message = "title is required")
     private String title;
+
     @NotBlank(message = "content is required")
     private String content;
 
