@@ -3,6 +3,7 @@ package com.moukiladev.novelblog.controller;
 import com.moukiladev.novelblog.exception.ResourceNotFoundException;
 import com.moukiladev.novelblog.model.Category;
 import com.moukiladev.novelblog.repository.CategoryRepository;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,8 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category createCategory(@RequestBody Category category){
+    public Category createCategory(@Valid @RequestBody Category category){
         return categoryRepository.save(category);
     }
+
 }
