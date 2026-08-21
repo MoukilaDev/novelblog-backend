@@ -1,53 +1,42 @@
 package com.moukiladev.novelblog.controller;
 
-import com.moukiladev.novelblog.exception.ResourceNotFoundException;
-import com.moukiladev.novelblog.model.Comment;
-import com.moukiladev.novelblog.model.Post;
-import com.moukiladev.novelblog.repository.CommentRepository;
-import com.moukiladev.novelblog.repository.PostRepository;
+import com.moukiladev.novelblog.dto.CommentResponse;
+import com.moukiladev.novelblog.dto.CreateCommentRequest;
+import com.moukiladev.novelblog.dto.UpdateCommentRequest;
+import com.moukiladev.novelblog.service.CommentService;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/posts")
 public class CommentController {
-    private final PostRepository postRepository;
-    private final CommentRepository commentRepository;
-    public CommentController(PostRepository postRepository ,CommentRepository commentRepository){
-        this.commentRepository = commentRepository;
-        this.postRepository = postRepository;
+    private final CommentService commentService;
+
+    public CommentController(CommentService commentService){
+        this.commentService = commentService;
     }
 
 
     @GetMapping("/{postId}/comments")
-    public List<Comment> getCommentsByPostId(@PathVariable Long postId){
-        return  commentRepository.findByPostId(postId);
+    public List<CommentResponse> getCommentsByPostId(@PathVariable Long postId){
+        return commentService.getCommentsByPostId(postId);
     }
 
-    @PostMapping("/{postId}/comments")
-    public Comment createCommentById(@PathVariable Long postId, @Valid @RequestBody Comment newComment){
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
-        System.out.println("post reached");
-        newComment.setPost(post);
-        System.out.println("comment associated with the post");
-        return commentRepository.save(newComment);
+    @PostMapping("/comment")
+    public CommentResponse createCommentById(@Valid @RequestBody CreateCommentRequest dto){
+
+        return commentService.createComment(dto);
     }
 
-    @PutMapping("/comments/{commentId}")
-    public Comment updateComment(@PathVariable Long commentId, @Valid @RequestBody Comment comment){
-        Comment updatedComment = commentRepository.findById(commentId)
-                .orElseThrow(() -> new ResourceNotFoundException ("comment not found"));
-        updatedComment.setContent(comment.getContent());
-        updatedComment.setReaderName(comment.getReaderName());
-        return commentRepository.save(updatedComment);
+    @PutMapping("/{commentId}")
+    public CommentResponse updateComment(@PathVariable Long commentId , @Valid @RequestBody UpdateCommentRequest dto){
+        return commentService.updateComment(commentId,dto);
     }
 
     @DeleteMapping("/{commentId}/comments")
     public void deleteCommentById(@PathVariable Long commentId){
-        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new ResourceNotFoundException ("Post not found"));
-        commentRepository.delete(comment);
+        commentService.deleteComment(commentId);
     }
 }

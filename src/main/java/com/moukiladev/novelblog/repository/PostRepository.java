@@ -1,5 +1,6 @@
 package com.moukiladev.novelblog.repository;
 
+import com.moukiladev.novelblog.model.Category;
 import com.moukiladev.novelblog.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
