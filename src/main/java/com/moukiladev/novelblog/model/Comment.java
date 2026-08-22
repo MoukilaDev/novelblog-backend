@@ -18,7 +18,6 @@ public class Comment {
 
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
-    @JsonIgnore
     private Post post;
 
     //Constructors

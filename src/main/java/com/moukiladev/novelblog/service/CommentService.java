@@ -4,6 +4,7 @@ import com.moukiladev.novelblog.dto.CommentResponse;
 import com.moukiladev.novelblog.dto.CreateCommentRequest;
 import com.moukiladev.novelblog.dto.UpdateCommentRequest;
 import com.moukiladev.novelblog.exception.ResourceNotFoundException;
+import com.moukiladev.novelblog.mapper.CommentMapper;
 import com.moukiladev.novelblog.model.Comment;
 import com.moukiladev.novelblog.model.Post;
 import com.moukiladev.novelblog.repository.CommentRepository;
@@ -17,22 +18,20 @@ import java.util.List;
 public class CommentService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
+    private final CommentMapper commentMapper;
     // constructor
-    public CommentService(PostRepository postRepository, CommentRepository commentRepository){
+    public CommentService(PostRepository postRepository, CommentRepository commentRepository, CommentMapper commentMapper){
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
+        this.commentMapper = commentMapper;
     }
+    //Methods
 
     public List<CommentResponse> getCommentsByPostId(Long postId){
         List<CommentResponse> dtoResponses = new ArrayList<>();
         List<Comment> comments = commentRepository.findByPostId(postId);
         for(Comment theComment : comments){
-                CommentResponse commentResponse = new CommentResponse();
-                commentResponse.setId(theComment.getId());
-                commentResponse.setReaderName(theComment.getReaderName());
-                commentResponse.setContent(theComment.getContent());
-
-                dtoResponses.add(commentResponse);
+                dtoResponses.add(commentMapper.toCommentResponse(theComment));
         }
         return dtoResponses;
     }
@@ -41,28 +40,22 @@ public class CommentService {
         Post post = postRepository.findById(dto.getPostId())
                 .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
         System.out.println("post reached");
-        Comment requestedComment = new Comment();
 
-        requestedComment.setReaderName(dto.getReaderName());
-        requestedComment.setContent(dto.getContent());
+        Comment requestedComment = commentMapper.toCommentEntity(dto);
         requestedComment.setPost(post);
         Comment savedComment = commentRepository.save(requestedComment);
 
-        CommentResponse dtoResponse = new CommentResponse(savedComment.getId()
-                , savedComment.getReaderName(), savedComment.getContent());
-        return dtoResponse;
+        return commentMapper.toCommentResponse(savedComment);
     }
 
     public CommentResponse updateComment(Long commentId, UpdateCommentRequest dto){
         Comment requestedComment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ResourceNotFoundException ("comment not found"));
+
         requestedComment.setContent(dto.getContent());
-        commentRepository.save(requestedComment);
+        Comment savedComment = commentRepository.save(requestedComment);
 
-        CommentResponse dtoResponse = new CommentResponse(requestedComment.getId()
-                , requestedComment.getReaderName(), requestedComment.getContent());
-
-        return dtoResponse;
+        return commentMapper.toCommentResponse(savedComment);
     }
 
     public void deleteComment(Long commentId){
@@ -70,6 +63,5 @@ public class CommentService {
                 .orElseThrow(() -> new ResourceNotFoundException ("Post not found"));
         commentRepository.delete(comment);
     }
-
 
 }
