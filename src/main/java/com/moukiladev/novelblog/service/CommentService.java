@@ -11,7 +11,6 @@ import com.moukiladev.novelblog.repository.CommentRepository;
 import com.moukiladev.novelblog.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,12 +27,11 @@ public class CommentService {
     //Methods
 
     public List<CommentResponse> getCommentsByPostId(Long postId){
-        List<CommentResponse> dtoResponses = new ArrayList<>();
         List<Comment> comments = commentRepository.findByPostId(postId);
-        for(Comment theComment : comments){
-                dtoResponses.add(commentMapper.toCommentResponse(theComment));
-        }
-        return dtoResponses;
+
+        return comments.stream()
+                .map(commentMapper::toCommentResponse)
+                .toList();
     }
 
     public CommentResponse createComment(CreateCommentRequest dto){
