@@ -1,6 +1,7 @@
 package com.moukiladev.novelblog.controller;
 
 import com.moukiladev.novelblog.dto.CreatePostRequest;
+import com.moukiladev.novelblog.dto.PostResponse;
 import com.moukiladev.novelblog.dto.UpdatePostRequest;
 import com.moukiladev.novelblog.exception.ResourceNotFoundException;
 import com.moukiladev.novelblog.model.Category;
@@ -23,22 +24,22 @@ public class PostController {
     }
 
     @GetMapping
-    public List<Post> getAllPosts(){
+    public List<PostResponse> getAllPosts(){
         return postService.getAllPosts();
     }
 
     @GetMapping("/{id}")
-    public Post getPostById(@PathVariable Long id){
+    public PostResponse getPostById(@PathVariable Long id){
         return postService.findById(id);
     }
 
     @PostMapping // JSON -> Java object
-    public Post createPost(@Valid @RequestBody CreatePostRequest dto){
+    public PostResponse createPost(@Valid @RequestBody CreatePostRequest dto){
         return postService.createPost(dto);
     }
 
     @PutMapping("/{id}")
-    public Post updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequest dto){
+    public PostResponse updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequest dto){
         return postService.updatePost(id, dto);
     }
 

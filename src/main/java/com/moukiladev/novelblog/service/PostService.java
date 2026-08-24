@@ -1,8 +1,10 @@
 package com.moukiladev.novelblog.service;
 
 import com.moukiladev.novelblog.dto.CreatePostRequest;
+import com.moukiladev.novelblog.dto.PostResponse;
 import com.moukiladev.novelblog.dto.UpdatePostRequest;
 import com.moukiladev.novelblog.exception.ResourceNotFoundException;
+import com.moukiladev.novelblog.mapper.PostMapper;
 import com.moukiladev.novelblog.model.Category;
 import com.moukiladev.novelblog.model.Post;
 import com.moukiladev.novelblog.repository.CategoryRepository;
@@ -15,43 +17,51 @@ import java.util.List;
 public class PostService {
     private final PostRepository postRepository;
     private final CategoryRepository categoryRepository;
-    public PostService(PostRepository postRepository, CategoryRepository categoryRepository){
+    private final PostMapper postMapper;
+    public PostService(PostRepository postRepository, CategoryRepository categoryRepository
+            , PostMapper postMapper){
         this.postRepository = postRepository;
         this.categoryRepository = categoryRepository;
+        this.postMapper = postMapper;
     }
 
-    public List<Post> getAllPosts(){
-        return postRepository.findAll();
+    public List<PostResponse> getAllPosts(){
+        List<Post> savedPosts = postRepository.findAll();
+
+        return savedPosts.stream()
+                .map(postMapper::toPostResponse)
+                .toList();
     }
 
-    public Post findById(Long id){
-        return postRepository.findById(id)
+    public PostResponse findById(Long id){
+            Post savedPost = postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Post not found"));
+
+            return postMapper.toPostResponse(savedPost);
     }
 
-    public Post createPost(CreatePostRequest dto){
-        Post requestedPost = new Post();
+    public PostResponse createPost(CreatePostRequest dto){
         Category category= categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(()-> new ResourceNotFoundException("Category not found"));
 
-        requestedPost.setTitle(dto.getTitle());
-        requestedPost.setContent(dto.getContent());
+        Post requestedPost = postMapper.toPostEntity(dto);
         requestedPost.setCategory(category);
+        Post savedPost = postRepository.save(requestedPost);
 
-        return postRepository.save(requestedPost);
+        return postMapper.toPostResponse(savedPost);
     }
 
-    public Post updatePost(Long postId, UpdatePostRequest dto){
-        Post requestedPost = postRepository.findById(postId)
-                .orElseThrow(() -> new ResourceNotFoundException ("Post not found"));
+    public PostResponse updatePost(Long postId, UpdatePostRequest dto){
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() -> new ResourceNotFoundException ("Category of this post not found"));
 
-        requestedPost.setTitle(dto.getTitle());
-        requestedPost.setContent(dto.getContent());
-        requestedPost.setCategory(category);
+        Post dbPost = postRepository.findById(postId)
+                .orElseThrow(() -> new ResourceNotFoundException ("Post not found"));
 
-        return postRepository.save(requestedPost);
+        postMapper.updatePostFromDto(dto, dbPost);
+        dbPost.setCategory(category);
+        Post savedPost = postRepository.save(dbPost);
+         return postMapper.toPostResponse(savedPost);
     }
 
     public void deleteByPostId(Long postId){

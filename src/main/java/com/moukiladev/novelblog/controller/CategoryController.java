@@ -1,8 +1,11 @@
 package com.moukiladev.novelblog.controller;
 
+import com.moukiladev.novelblog.dto.CategoryResponse;
+import com.moukiladev.novelblog.dto.CreateCategoryRequest;
 import com.moukiladev.novelblog.exception.ResourceNotFoundException;
 import com.moukiladev.novelblog.model.Category;
 import com.moukiladev.novelblog.repository.CategoryRepository;
+import com.moukiladev.novelblog.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,20 +14,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/Categories")
 public class CategoryController {
-    private final CategoryRepository categoryRepository;
-
-    public CategoryController(CategoryRepository categoryRepository){
-        this.categoryRepository = categoryRepository;
+    private final CategoryService categoryService;
+    public CategoryController(CategoryService categoryService){
+        this.categoryService = categoryService;
     }
-
     @GetMapping
-    public List<Category> getAllCategories(){
-        return categoryRepository.findAll();
+    public List<CategoryResponse> getAllCategories(){
+        return categoryService.getAllCategories();
     }
 
     @PostMapping
-    public Category createCategory(@Valid @RequestBody Category category){
-        return categoryRepository.save(category);
+    public CategoryResponse createCategory(@Valid @RequestBody CreateCategoryRequest category){
+        return categoryService.createCategory(category);
     }
 
 }
