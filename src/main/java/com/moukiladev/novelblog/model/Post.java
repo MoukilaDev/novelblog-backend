@@ -32,10 +32,11 @@ public class Post {
 
     // Constructor
     public Post(){};
-    public Post(String title, String content, List<Comment> comments){
+    public Post(String title, String content, Category category, List<Comment> comments){
         this.title = title;
         this.content = content;
         this.comments = comments;
+        this.category =category;
     }
     // Getter and Setter
     public Long getId() {

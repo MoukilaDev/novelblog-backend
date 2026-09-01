@@ -27,7 +27,7 @@ public class SecurityConfig {
         return (http.build());
     }
 
-    // For allowing client communicate with this server and granting him rights
+    // For allowing client communicate with this server and granting them rights
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

@@ -2,9 +2,7 @@ package com.moukiladev.novelblog.controller;
 
 import com.moukiladev.novelblog.dto.CategoryResponse;
 import com.moukiladev.novelblog.dto.CreateCategoryRequest;
-import com.moukiladev.novelblog.exception.ResourceNotFoundException;
-import com.moukiladev.novelblog.model.Category;
-import com.moukiladev.novelblog.repository.CategoryRepository;
+import com.moukiladev.novelblog.dto.UpdateCategoryRequest;
 import com.moukiladev.novelblog.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -28,4 +26,9 @@ public class CategoryController {
         return categoryService.createCategory(category);
     }
 
+    @PutMapping("/{categoryId}")
+    public CategoryResponse updateCategory(@PathVariable Long categoryId
+            ,@Valid @RequestBody UpdateCategoryRequest dto) {
+        return categoryService.updateCategory(categoryId, dto);
+    }
 }

@@ -12,9 +12,7 @@ public class CreatePostRequest {
     private Long categoryId;
 
     //contructors
-
     public CreatePostRequest(){}
-
     public CreatePostRequest(String title, String content, Long categoryId){
         this.title = title;
         this.content = content;
@@ -22,7 +20,6 @@ public class CreatePostRequest {
     }
 
     //Getters and Setters
-
     public String getTitle() {
         return title;
     }
