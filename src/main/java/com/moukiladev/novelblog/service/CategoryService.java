@@ -3,7 +3,7 @@ package com.moukiladev.novelblog.service;
 import com.moukiladev.novelblog.dto.CategoryResponse;
 import com.moukiladev.novelblog.dto.CreateCategoryRequest;
 import com.moukiladev.novelblog.dto.UpdateCategoryRequest;
-import com.moukiladev.novelblog.exception.ResourceAlreadyExist;
+import com.moukiladev.novelblog.exception.ResourceAlreadyExistsException;
 import com.moukiladev.novelblog.exception.ResourceNotFoundException;
 import com.moukiladev.novelblog.mapper.CategoryMapper;
 import com.moukiladev.novelblog.model.Category;
@@ -31,7 +31,7 @@ public class CategoryService {
     public CategoryResponse createCategory(CreateCategoryRequest dto){
         String normalizedCategoryName =  dto.getCategoryName().trim().toLowerCase();
         if(categoryRepository.existsByCategoryName(normalizedCategoryName)){
-            throw new ResourceAlreadyExist("This category name already exist");
+            throw new ResourceAlreadyExistsException("This category name already exist");
         }
 
         dto.setCategoryName(normalizedCategoryName);
@@ -43,7 +43,7 @@ public class CategoryService {
     public CategoryResponse updateCategory (Long categoryId, UpdateCategoryRequest dto){
         String normalizedCategoryName =  dto.getCategoryName().trim().toLowerCase();
         if( categoryRepository.existsByCategoryNameAndCategoryIdNot(normalizedCategoryName, categoryId)){
-            throw new ResourceAlreadyExist("This category name already exist");
+            throw new ResourceAlreadyExistsException("This category name already exist");
         }
         dto.setCategoryName(normalizedCategoryName);
         Category dbCategory = categoryRepository.findById(categoryId)

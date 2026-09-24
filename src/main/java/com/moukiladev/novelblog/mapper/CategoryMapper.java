@@ -4,6 +4,7 @@ import com.moukiladev.novelblog.dto.CategoryResponse;
 import com.moukiladev.novelblog.dto.CreateCategoryRequest;
 import com.moukiladev.novelblog.dto.UpdateCategoryRequest;
 import com.moukiladev.novelblog.model.Category;
+import jakarta.validation.Valid;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 

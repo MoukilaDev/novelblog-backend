@@ -11,10 +11,10 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long categoryId;
     @NotBlank(message = "name is required")
+    @Column(unique = true)
     private String categoryName;
-
     @OneToMany(mappedBy = "category" , cascade = CascadeType.ALL)
-    private List<Post> Post;
+    private List<Post> posts;
 
     public Category(){};
 

@@ -1,9 +1,9 @@
 package com.moukiladev.novelblog.exception;
 
+import com.moukiladev.novelblog.dto.ExceptionDtoResponse;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import com.moukiladev.novelblog.exception.ResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,25 +11,44 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException r) {
+    public ResponseEntity<ExceptionDtoResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
+        ExceptionDtoResponse dto = new ExceptionDtoResponse("Resource not found");
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(r.getMessage());
+                .body(dto);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidationException(MethodArgumentNotValidException ex) {
-        String message = ex.getBindingResult()
+    public ResponseEntity<ExceptionDtoResponse> handleValidationException(MethodArgumentNotValidException e) {
+        String message = e.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                .map(error ->"Enter a correct value of the field "+ error.getField())
                 .findFirst()
                 .orElse("Invalid input");
 
+        ExceptionDtoResponse dto = new ExceptionDtoResponse(message);
 
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(message);
+                .body(dto);
+    }
+
+    @ExceptionHandler(ResourceAlreadyExistsException.class)
+    public ResponseEntity<ExceptionDtoResponse> handleResourceAlreadyExistsException
+            (ResourceAlreadyExistsException e) {
+        ExceptionDtoResponse dto = new ExceptionDtoResponse("This resource already exists");
+        return  ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(dto);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ExceptionDtoResponse> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        ExceptionDtoResponse dto = new ExceptionDtoResponse("This entry conflicts with existing record");
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(dto);
     }
 
 }
