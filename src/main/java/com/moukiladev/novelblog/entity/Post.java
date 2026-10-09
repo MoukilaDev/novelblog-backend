@@ -1,4 +1,4 @@
-package com.moukiladev.novelblog.model;
+package com.moukiladev.novelblog.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;

@@ -6,7 +6,7 @@ import com.moukiladev.novelblog.dto.UpdateCategoryRequest;
 import com.moukiladev.novelblog.exception.ResourceAlreadyExistsException;
 import com.moukiladev.novelblog.exception.ResourceNotFoundException;
 import com.moukiladev.novelblog.mapper.CategoryMapper;
-import com.moukiladev.novelblog.model.Category;
+import com.moukiladev.novelblog.entity.Category;
 import com.moukiladev.novelblog.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 

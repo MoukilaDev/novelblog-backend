@@ -1,4 +1,4 @@
-package com.moukiladev.novelblog.model;
+package com.moukiladev.novelblog.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -21,6 +21,7 @@ public class User {
     @NotBlank(message = "email is required")
     private String email;
 
+    @Column(nullable = false)
     @NotBlank(message = "role is required")
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;

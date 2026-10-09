@@ -3,7 +3,7 @@ package com.moukiladev.novelblog.mapper;
 import com.moukiladev.novelblog.dto.CreatePostRequest;
 import com.moukiladev.novelblog.dto.PostResponse;
 import com.moukiladev.novelblog.dto.UpdatePostRequest;
-import com.moukiladev.novelblog.model.Post;
+import com.moukiladev.novelblog.entity.Post;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
