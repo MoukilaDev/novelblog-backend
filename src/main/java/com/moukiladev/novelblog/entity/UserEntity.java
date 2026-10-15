@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 
 @Entity
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,8 +26,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 
-    public User() {};
-    public User(String username, String password, String email, Role role) {
+    public UserEntity() {};
+    public UserEntity(String username, String password, String email, Role role) {
         this.username = username;
         this.password = password;
         this.email = email;

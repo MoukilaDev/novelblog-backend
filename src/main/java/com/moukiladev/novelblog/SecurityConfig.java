@@ -2,6 +2,9 @@ package com.moukiladev.novelblog;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -23,10 +26,16 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable()) // disactivate CSRF
                 .cors(cors -> {}) // activate CORS (Cross Origin Requests)
                 .headers( headers -> headers.frameOptions((frame -> frame.disable())))// autorisation for H2 database call
-                .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(auth ->auth
                         .requestMatchers("/h2-console/**").authenticated()
-                        .anyRequest().permitAll()// autorise all
-                );
+                        .requestMatchers("/api/Categories/**").authenticated()
+                        .requestMatchers(HttpMethod.GET,"/api/posts/**").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/posts/**").authenticated()
+                        .requestMatchers(HttpMethod.PUT,"/api/posts/**").authenticated()
+                        .requestMatchers(HttpMethod.DELETE,"/api/posts/**").authenticated()
+                        .requestMatchers("/**").authenticated()
+                )
+                .httpBasic(Customizer.withDefaults());
         return (http.build());
     }
 
@@ -44,7 +53,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public static PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder(16);
+    public PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder(10);
     }
 }
