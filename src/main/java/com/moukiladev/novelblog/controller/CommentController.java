@@ -30,7 +30,7 @@ public class CommentController {
         return commentService.createComment(dto);
     }
 
-    @PutMapping("/{commentId}")
+    @PutMapping("/comment/{commentId}")
     public CommentResponse updateComment(@PathVariable Long commentId , @Valid @RequestBody UpdateCommentRequest dto){
         return commentService.updateComment(commentId,dto);
     }

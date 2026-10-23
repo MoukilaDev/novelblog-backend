@@ -1,5 +1,6 @@
 package com.moukiladev.novelblog.entity;
 
+import jakarta.persistence.Entity;
 import org.springframework.security.core.GrantedAuthority;
 
 public enum Role implements GrantedAuthority {

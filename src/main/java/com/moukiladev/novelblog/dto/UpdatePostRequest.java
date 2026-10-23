@@ -18,7 +18,7 @@ public class UpdatePostRequest {
         this.content = content;
         this.categoryId = categoryId;
     }
-    // Getters and Setteres
+    // Getters and Setters
     public String getTitle() {
         return title;
     }

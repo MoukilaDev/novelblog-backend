@@ -2,6 +2,7 @@ package com.moukiladev.novelblog.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class UserEntity {
@@ -22,7 +23,7 @@ public class UserEntity {
     private String email;
 
     @Column(nullable = false)
-    @NotBlank(message = "role is required")
+    @NotNull
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
 

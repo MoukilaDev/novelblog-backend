@@ -7,8 +7,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -30,9 +34,10 @@ public class SecurityConfig {
                         .requestMatchers("/h2-console/**").authenticated()
                         .requestMatchers("/api/Categories/**").authenticated()
                         .requestMatchers(HttpMethod.GET,"/api/posts/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/posts/**").authenticated()
-                        .requestMatchers(HttpMethod.PUT,"/api/posts/**").authenticated()
-                        .requestMatchers(HttpMethod.DELETE,"/api/posts/**").authenticated()
+                        .requestMatchers(HttpMethod.POST,"/api/posts/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/api/posts/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/posts/**").hasRole("ADMIN")
+                        .requestMatchers("/api/users/**").hasRole("ADMIN")
                         .requestMatchers("/**").authenticated()
                 )
                 .httpBasic(Customizer.withDefaults());
