@@ -10,7 +10,6 @@ public class CreatePostRequest {
     private String content;
     @NotNull(message = "The id of the category is required")
     private Long categoryId;
-
     //contructors
     public CreatePostRequest(){}
     public CreatePostRequest(String title, String content, Long categoryId){
@@ -23,23 +22,18 @@ public class CreatePostRequest {
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
-
     public String getContent() {
         return content;
     }
-
     public void setContent(String content) {
         this.content = content;
     }
-
     public Long getCategoryId() {
         return categoryId;
     }
-
     public void setCategoryId(Long categoryId) {
         this.categoryId = categoryId;
     }
