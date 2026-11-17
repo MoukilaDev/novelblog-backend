@@ -1,7 +1,7 @@
 package com.moukiladev.novelblog.mapper;
-import com.moukiladev.novelblog.dto.CreateUserRequest;
-import com.moukiladev.novelblog.dto.UpdateUserRequest;
-import com.moukiladev.novelblog.dto.UserResponse;
+import com.moukiladev.novelblog.dto.user.CreateUserRequest;
+import com.moukiladev.novelblog.dto.user.UpdateUserRequest;
+import com.moukiladev.novelblog.dto.user.UserResponse;
 import com.moukiladev.novelblog.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

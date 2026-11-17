@@ -1,4 +1,4 @@
-package com.moukiladev.novelblog.dto;
+package com.moukiladev.novelblog.dto.comment;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +16,15 @@ public class UpdateCommentRequest {
         this.content = content;
     }
     //Getters and Setters
-    public Long getCommentId() { return commentId;}
-    public String getContent() {return content;}
-    public void setContent(String content) { this.content = content;}
+    public Long getCommentId() {
+        return commentId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }

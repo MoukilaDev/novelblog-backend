@@ -1,4 +1,4 @@
-package com.moukiladev.novelblog.dto;
+package com.moukiladev.novelblog.dto.user;
 import com.moukiladev.novelblog.entity.Role;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

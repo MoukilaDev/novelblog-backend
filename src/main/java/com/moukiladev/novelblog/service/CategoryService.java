@@ -1,8 +1,8 @@
 package com.moukiladev.novelblog.service;
 
-import com.moukiladev.novelblog.dto.CategoryResponse;
-import com.moukiladev.novelblog.dto.CreateCategoryRequest;
-import com.moukiladev.novelblog.dto.UpdateCategoryRequest;
+import com.moukiladev.novelblog.dto.category.CategoryResponse;
+import com.moukiladev.novelblog.dto.category.CreateCategoryRequest;
+import com.moukiladev.novelblog.dto.category.UpdateCategoryRequest;
 import com.moukiladev.novelblog.exception.ResourceAlreadyExistsException;
 import com.moukiladev.novelblog.exception.ResourceNotFoundException;
 import com.moukiladev.novelblog.mapper.CategoryMapper;
@@ -42,7 +42,7 @@ public class CategoryService {
 
     public CategoryResponse updateCategory (Long categoryId, UpdateCategoryRequest dto){
         String normalizedCategoryName =  dto.getCategoryName().trim().toLowerCase();
-        if( categoryRepository.existsByCategoryNameAndCategoryIdNot(normalizedCategoryName, categoryId)){
+        if( categoryRepository.existsByCategoryNameAndIdNot(normalizedCategoryName, categoryId)){
             throw new ResourceAlreadyExistsException("This category name already exist");
         }
         dto.setCategoryName(normalizedCategoryName);

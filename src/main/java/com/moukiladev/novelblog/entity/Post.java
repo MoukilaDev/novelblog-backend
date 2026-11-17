@@ -1,6 +1,5 @@
 package com.moukiladev.novelblog.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,16 +25,20 @@ public class Post {
     private List<Comment> comments;
 
     @ManyToOne
-    @JoinColumn(name = "categoryId", nullable = false)
-    @JsonIgnore
+    @JoinColumn(name = "userEntity_id", nullable = false)
+    private UserEntity author;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     // Constructor
     public Post(){};
-    public Post(String title, String content, Category category, List<Comment> comments){
+    public Post(String title, String content, UserEntity author, Category category, List<Comment> comments){
         this.title = title;
         this.content = content;
         this.comments = comments;
+        this.author = author;
         this.category =category;
     }
     // Getter and Setter
@@ -69,6 +72,14 @@ public class Post {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public UserEntity getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(UserEntity author) {
+        this.author = author;
     }
 
     public Category getCategory() {

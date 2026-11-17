@@ -1,23 +1,23 @@
 package com.moukiladev.novelblog.controller;
 
-import com.moukiladev.novelblog.dto.CommentResponse;
-import com.moukiladev.novelblog.dto.CreateCommentRequest;
-import com.moukiladev.novelblog.dto.UpdateCommentRequest;
+import com.moukiladev.novelblog.dto.comment.CommentResponse;
+import com.moukiladev.novelblog.dto.comment.CreateCommentRequest;
+import com.moukiladev.novelblog.dto.comment.UpdateCommentRequest;
 import com.moukiladev.novelblog.service.CommentService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/posts")
+@RequestMapping("/api/comments")
 public class CommentController {
     private final CommentService commentService;
-
     public CommentController(CommentService commentService){
         this.commentService = commentService;
     }
-
 
     @GetMapping("/{postId}/comments")
     public List<CommentResponse> getCommentsByPostId(@PathVariable Long postId){
@@ -25,18 +25,20 @@ public class CommentController {
     }
 
     @PostMapping("/comment")
-    public CommentResponse createCommentById(@Valid @RequestBody CreateCommentRequest dto){
-
-        return commentService.createComment(dto);
+    public CommentResponse createCommentById(@AuthenticationPrincipal UserDetails currentUser,
+                                             @Valid @RequestBody CreateCommentRequest dto){
+        return commentService.createComment(currentUser, dto);
     }
 
-    @PutMapping("/comment/{commentId}")
-    public CommentResponse updateComment(@PathVariable Long commentId , @Valid @RequestBody UpdateCommentRequest dto){
-        return commentService.updateComment(commentId,dto);
+    @PutMapping("/comment")
+    public CommentResponse updateComment(@AuthenticationPrincipal UserDetails currentUser,
+                                         @Valid @RequestBody UpdateCommentRequest dto){
+        return commentService.updateComment(currentUser, dto);
     }
 
-    @DeleteMapping("/{commentId}/comments")
-    public void deleteCommentById(@PathVariable Long commentId){
-        commentService.deleteComment(commentId);
+    @DeleteMapping("/{commentId}")
+    public void deleteCommentById(@AuthenticationPrincipal UserDetails currentUser,
+                                  @PathVariable Long  commentId){
+        commentService.deleteComment(currentUser, commentId);
     }
 }

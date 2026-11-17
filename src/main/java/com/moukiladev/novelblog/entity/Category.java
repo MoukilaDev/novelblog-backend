@@ -9,7 +9,7 @@ import java.util.List;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long categoryId;
+    private Long id;
     @NotBlank(message = "name is required")
     @Column(unique = true)
     private String categoryName;
@@ -17,7 +17,6 @@ public class Category {
     private List<Post> posts;
 
     public Category(){};
-
     public Category(String categoryName){
         this.categoryName = categoryName;
     }
@@ -30,11 +29,11 @@ public class Category {
         this.categoryName = categoryName;
     }
 
-    public Long getCategoryId() {
-        return categoryId;
+    public Long getId() {
+        return id;
     }
 
-    public void setCategoryId(Long categoryId) {
-        this.categoryId = categoryId;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

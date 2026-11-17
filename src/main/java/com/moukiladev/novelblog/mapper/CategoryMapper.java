@@ -1,8 +1,8 @@
 package com.moukiladev.novelblog.mapper;
 
-import com.moukiladev.novelblog.dto.CategoryResponse;
-import com.moukiladev.novelblog.dto.CreateCategoryRequest;
-import com.moukiladev.novelblog.dto.UpdateCategoryRequest;
+import com.moukiladev.novelblog.dto.category.CategoryResponse;
+import com.moukiladev.novelblog.dto.category.CreateCategoryRequest;
+import com.moukiladev.novelblog.dto.category.UpdateCategoryRequest;
 import com.moukiladev.novelblog.entity.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

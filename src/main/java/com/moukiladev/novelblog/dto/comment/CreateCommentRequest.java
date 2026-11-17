@@ -1,4 +1,4 @@
-package com.moukiladev.novelblog.dto;
+package com.moukiladev.novelblog.dto.comment;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,17 +19,29 @@ public class CreateCommentRequest {
     };
     //Getters and Setters
     public String getContent() {
+
         return content;
     }
+
     public void setContent(String content) {
+
         this.content = content;
     }
-    public String getAuthorName() { return authorName;}
-    public void setAuthorName(String authorName) { this.authorName = authorName; }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
     public Long getPostId() {
+
         return PostId;
     }
     public void setPostId(Long postId) {
+
         this.PostId = postId;
     }
 }

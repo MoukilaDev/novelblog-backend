@@ -1,4 +1,4 @@
-package com.moukiladev.novelblog.dto;
+package com.moukiladev.novelblog.dto.post;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 @Entity
 public class UserEntity {
     @Id
@@ -26,6 +28,12 @@ public class UserEntity {
     @NotNull
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Post>  posts;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     public UserEntity() {};
     public UserEntity(String username, String password, String email, Role role) {
@@ -62,9 +70,11 @@ public class UserEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+
     public Role getRole() {
         return role;
     }
+
     public void setRole(Role role) {
         this.role = role;
     }

@@ -6,10 +6,12 @@ import com.moukiladev.novelblog.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
+@Profile("dev")
 public class DevDataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -24,7 +26,7 @@ public class DevDataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        if(userRepository.findByUsername("userTest").isEmpty()){
+        if(userRepository.findByUsername("adminTest").isEmpty()){
             String encodedPassword = passwordEncoder.encode("passwordtest123");
             UserEntity user = new UserEntity("userTest", encodedPassword
                     , "testuser@example.com", Role.ADMIN);

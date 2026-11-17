@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    boolean existsByCategoryNameAndCategoryIdNot (String categoryName, Long categoryId);
-    boolean existsByCategoryName(String categoryName);
+    public boolean existsByCategoryNameAndIdNot(String categoryName, Long id);
+    public boolean existsByCategoryName(String categoryName);
 }

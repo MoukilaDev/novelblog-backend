@@ -1,12 +1,14 @@
 package com.moukiladev.novelblog.controller;
 
-import com.moukiladev.novelblog.dto.CreateUserRequest;
-import com.moukiladev.novelblog.dto.UpdateUserRequest;
-import com.moukiladev.novelblog.dto.UserResponse;
+import com.moukiladev.novelblog.dto.user.CreateUserRequest;
+import com.moukiladev.novelblog.dto.UpdatePasswordRequest;
+import com.moukiladev.novelblog.dto.user.UpdateUserRequest;
+import com.moukiladev.novelblog.dto.user.UserResponse;
 import com.moukiladev.novelblog.service.UserEntityService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -20,7 +22,7 @@ public class UserController {
     @GetMapping
     public List<UserResponse> getUsers(){ return userEntityService.getUsers(); }
 
-    @GetMapping("/id")
+    @GetMapping("/{id}")
     public UserResponse getUserById(@PathVariable long id){ return userEntityService.getUserById(id); }
 
     @PostMapping
@@ -28,12 +30,18 @@ public class UserController {
         return userEntityService.createUser(dto);
     }
 
-    @PutMapping("/id")
-    public UserResponse updateUser(@Valid @RequestBody UpdateUserRequest dto, @PathVariable long id){
-        return userEntityService.updateUser(dto, id);
+    @PutMapping("/me")
+    public UserResponse updateUser(@Valid @RequestBody UpdateUserRequest dto,
+                                   @AuthenticationPrincipal UserDetails currentUser){
+        return userEntityService.updateUser(dto, currentUser);
+    }
+    @PutMapping("/me/password")
+    public UserResponse updatePassword(@Valid @RequestBody UpdatePasswordRequest dto,
+                                       @AuthenticationPrincipal UserDetails currentUser){
+        return userEntityService.updatePassword(dto, currentUser);
     }
 
-    @DeleteMapping("/id")
+    @DeleteMapping("/{id}")
     public void deleteUserById(@PathVariable long id){
         userEntityService.deleteUser(id);
     }

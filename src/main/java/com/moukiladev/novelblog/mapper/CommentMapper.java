@@ -1,13 +1,19 @@
 package com.moukiladev.novelblog.mapper;
 
-import com.moukiladev.novelblog.dto.CommentResponse;
-import com.moukiladev.novelblog.dto.CreateCommentRequest;
+import com.moukiladev.novelblog.dto.comment.CommentResponse;
+import com.moukiladev.novelblog.dto.comment.CreateCommentRequest;
+import com.moukiladev.novelblog.dto.comment.UpdateCommentRequest;
 import com.moukiladev.novelblog.entity.Comment;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
-        CommentResponse toCommentResponse(Comment comment);
-
-        Comment toCommentEntity(CreateCommentRequest dto);
+        @Mapping(target = "author", source = "author.username")
+        public CommentResponse toCommentResponse(Comment comment);
+        @Mapping(target = "author", ignore = true)
+        @Mapping(target = "post", ignore = true)
+        public Comment toCommentEntity(CreateCommentRequest dto);
+        public void updateCommentFromDto(UpdateCommentRequest dto, @MappingTarget Comment comment);
 }

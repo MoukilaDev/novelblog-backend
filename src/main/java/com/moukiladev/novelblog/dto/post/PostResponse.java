@@ -1,15 +1,17 @@
-package com.moukiladev.novelblog.dto;
+package com.moukiladev.novelblog.dto.post;
 
 public class PostResponse {
     private Long id;
     private String title;
     private String content;
+    private String author;
     //Constructors
     public PostResponse(){};
-    public PostResponse(Long id, String title, String content){
+    public PostResponse(Long id, String title, String content, String author){
         this.id = id;
         this.title =title;
         this.content = content;
+        this.author = author;
     }
     //Getters and Setters
     public Long getId() {
@@ -30,4 +32,6 @@ public class PostResponse {
     public void setContent(String content) {
         this.content = content;
     }
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
 }

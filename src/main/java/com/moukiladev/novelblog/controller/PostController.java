@@ -1,10 +1,12 @@
 package com.moukiladev.novelblog.controller;
 
-import com.moukiladev.novelblog.dto.CreatePostRequest;
-import com.moukiladev.novelblog.dto.PostResponse;
-import com.moukiladev.novelblog.dto.UpdatePostRequest;
+import com.moukiladev.novelblog.dto.post.CreatePostRequest;
+import com.moukiladev.novelblog.dto.post.PostResponse;
+import com.moukiladev.novelblog.dto.post.UpdatePostRequest;
 import com.moukiladev.novelblog.service.PostService;
 import jakarta.validation.Valid;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,18 +30,20 @@ public class PostController {
     }
 
     @PostMapping // JSON -> Java object
-    public PostResponse createPost(@Valid @RequestBody CreatePostRequest dto){
-        return postService.createPost(dto);
+    public PostResponse createPost(@AuthenticationPrincipal UserDetails currentUser
+            , @Valid @RequestBody CreatePostRequest dto){
+        return postService.createPost(currentUser, dto);
     }
 
     @PutMapping("/{id}")
-    public PostResponse updatePost(@PathVariable Long id, @Valid @RequestBody UpdatePostRequest dto){
-        return postService.updatePost(id, dto);
+    public PostResponse updatePost(@AuthenticationPrincipal UserDetails currentUser
+            , @Valid @RequestBody UpdatePostRequest dto,  @PathVariable Long id){
+        return postService.updatePost(currentUser, dto, id);
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable Long id) {
-        postService.deleteByPostId(id);
+    public void deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetails currentUser) {
+        postService.deleteByPostId(id, currentUser);
     }
 
 }
