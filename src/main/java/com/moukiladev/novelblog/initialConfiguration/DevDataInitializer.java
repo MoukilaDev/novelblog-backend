@@ -28,8 +28,8 @@ public class DevDataInitializer implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if(userRepository.findByUsername("adminTest").isEmpty()){
             String encodedPassword = passwordEncoder.encode("passwordtest123");
-            UserEntity user = new UserEntity("userTest", encodedPassword
-                    , "testuser@example.com", Role.ADMIN);
+            UserEntity user = new UserEntity("adminTest", encodedPassword
+                    , "adminTest@example.com", Role.ADMIN);
 
             userRepository.save(user);
         }else{

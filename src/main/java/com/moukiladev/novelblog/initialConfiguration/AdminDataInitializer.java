@@ -7,13 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile("test")
-public class TestDataInitializer implements CommandLineRunner {
+public class AdminDataInitializer implements CommandLineRunner {
     @Value("${application.security.admin.name}")
     private String adminTest;
     @Value("${application.security.admin.password}")
@@ -23,17 +21,25 @@ public class TestDataInitializer implements CommandLineRunner {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private static final Logger log =
-            LoggerFactory.getLogger(DevDataInitializer.class);
+            LoggerFactory.getLogger(AdminDataInitializer.class);
 
-    public TestDataInitializer(UserRepository userRepository,
-                               PasswordEncoder passwordEncoder) {
+    public AdminDataInitializer(UserRepository userRepository,
+                                PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if(userRepository.findByUsername(adminTest).isEmpty()){
+            if(adminPassword == null || adminPassword.isBlank()){
+                throw new IllegalStateException("Invalid configuration : application.security.admin.password (ADMIN_PASSWORD) cannot be null or blank");
+            } else if (adminEmail.contains(" ")){
+                throw new IllegalStateException("Invalid configuration : application.security.admin.password (ADMIN_PASSWORD) cannot be spaces");
+            } else if (adminPassword.length() < 12) {
+                throw new IllegalStateException("Invalid configuration : application.security.admin.password (ADMIN_PASSWORD) must be at least 12 characters long" );
+            }
+
             String encodedPassword = passwordEncoder.encode(adminPassword);
             UserEntity adminUser = new UserEntity(
                     adminTest, encodedPassword, adminEmail, Role.ADMIN);
